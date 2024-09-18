@@ -1,23 +1,7 @@
 {
-    "compilerOptions": {
-      "target": "es5",
-      "module": "commonjs",
-      "moduleResolution": "node",
-      "sourceMap": true,
-      "emitDecoratorMetadata": true,
-      "experimentalDecorators": true,
-      "removeComments": true,
-      "noImplicitAny": false,
-      "outDir": "dist",
-      "lib": [
-        "es6"
-      ]
-    },
-    "exclude": [
-        "**/node_modules/",
-        "spec/",
-        "**/*.spec.js",
-        "**/*.spec.ts",
-        "**/*.d.ts"
-    ]
-  }
+  "compilerOptions": {
+    "outDir": "dist"
+  },
+  "extends": "./tsconfig.base.json",
+  "include": ["src"]
+}

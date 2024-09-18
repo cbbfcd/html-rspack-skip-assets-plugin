@@ -1,29 +1,28 @@
 # Html Webpack Skip Assets Plugin
-_Skip adding certain output files to the html file. Built as a drop-in replacement for [html-webpack-exclude-assets-plugin](https://www.npmjs.com/package/html-webpack-exclude-assets-plugin) and works with newer [html-webpack-plugin](https://github.com/jantimon/html-webpack-plugin) versions_
 
-![build-plugin](https://github.com/swimmadude66/html-webpack-skip-assets-plugin/workflows/build-plugin/badge.svg?branch=master)
+> 🔥 Adapt `html-webpack-skip-assets-plugin` to `Rspack`
 
-[![NPM](https://nodei.co/npm/html-webpack-skip-assets-plugin.png?compact=true)](https://npmjs.org/package/html-webpack-skip-assets-plugin)
+> 🔥 `Rspack` does not support adding undefined properties to `HtmlRspackPlugin`, so `skipAssets` and similar properties cannot be used, which is different from the original plugin
 
+> 🔥 You can see the unit test for more usage
+
+---
 
 ## Configuration
 
-1. Install via `npm i -D html-webpack-skip-assets-plugin`
+1. Install via `npm i -D html-rspack-skip-assets-plugin`
 1. Add to your webpack config AFTER HtmlWebpackPlugin
 ```javascript
-    var HtmlWebpackSkipAssetsPlugin = require('html-webpack-skip-assets-plugin').HtmlWebpackSkipAssetsPlugin;
-    // OR for import style
-    import {HtmlWebpackSkipAssetsPlugin} from 'html-webpack-skip-assets-plugin'
+    import { HtmlRspackSkipAssetsPlugin } from 'html-rspack-skip-assets-plugin'
     ...
     plugins: [
-        new HtmlWebpackPlugin({
+        new rspack.HtmlRspackPlugin({
             filename: join(OUTPUT_DIR, './dist/index.html'),
-            // Skip Assets options can be added here
-            excludeAssets: ['polyfill.**.js', /styles\..*js$/i, (asset) => (asset.attributes && asset.attributes['x-skip'])]
-            // OR
-            skipAssets: ['polyfill.**.js', /styles\..*js$/i, (asset) => (asset.attributes && asset.attributes['x-skip'])]
+            // ⚠️ N.B. Rspack does not support adding undefined properties to HtmlRspackPlugin, so this code will throw an error!
+            // excludeAssets: ['polyfill.**.js', /styles\..*js$/i, (asset) => (asset.attributes && asset.attributes['x-skip'])]
+            // skipAssets: ['polyfill.**.js', /styles\..*js$/i, (asset) => (asset.attributes && asset.attributes['x-skip'])]
         }),
-        new HtmlWebpackSkipAssetsPlugin({
+        new HtmlRspackSkipAssetsPlugin({
             // or they can be passed in on the plugin. These 4 lists are combined before running
             excludeAssets: ['polyfill.**.js', /styles\..*js$/i, (asset) => (asset.attributes && asset.attributes['x-skip'])]
             // OR
@@ -39,19 +38,8 @@ The plugin takes a configuration argument with a key called `skipAssets`. This i
 This exclusion will also work for `inject: false`:
 
 ```js
-new HtmlWebpackPlugin({
+new rspack.HtmlRspackPlugin({
   inject: false,
-  excludeAssets: ['polyfill.**.js', /styles\..*js$/i, (asset) => (asset.attributes && asset.attributes['x-skip'])]
-  templateContent: ({htmlWebpackPlugin}) => `
-    <html>
-      <head>
-        ${htmlWebpackPlugin.tags.headTags}
-      </head>
-      <body>
-        ${htmlWebpackPlugin.tags.bodyTags}
-      </body>
-    </html>
-  `
 })
 ```
 
